@@ -1,0 +1,27 @@
+{
+  "name": "Generate Email from Name",
+  "description": "When a name is entered or changed, generate an email and fill in the email column.",
+  "actions": [
+    {
+      "name": "Generate Email",
+      "description": "Generate email from name and populate the email column.",
+      "inputFields": [
+        {
+          "field": "name_column",
+          "type": "column",
+          "label": "Name Column"
+        },
+        {
+          "field": "email_column",
+          "type": "column",
+          "label": "Email Column"
+        }
+      ],
+      "operation": {
+        "url": "monday-email-generator.onrender.com/generate-email",
+        "method": "post"
+      }
+    }
+  ],
+  "triggers": []
+}
