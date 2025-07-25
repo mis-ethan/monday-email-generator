@@ -9,7 +9,7 @@ const API_TOKEN = process.env.MONDAY_API_TOKEN;
 
 app.use(bodyParser.json());
 
-function nameToEmail(name, domain = "example.com") {
+function nameToEmail(name, domain = "ochsinc.org") {
   return name
     .toLowerCase()
     .trim()
