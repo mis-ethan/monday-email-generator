@@ -5,15 +5,11 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const MONDAY_API_TOKEN = process.env.MONDAY_API_TOKEN;
-const BOARD_ID = process.env.BOARD_ID; // Add this in Render environment variables
+const BOARD_ID = process.env.BOARD_ID;
 
-
-function NameToEmail(name, domain = "ochsinc.org") {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-zA-Z\s]/g, '') // remove special characters
-    .replace(/\s+/g, '.') + '@' + domain;
+// Example transformation function
+function transformText(text) {
+  return `[Edited] ${text}`;
 }
 
 app.post('/edit-column-text', async (req, res) => {
@@ -23,11 +19,11 @@ app.post('/edit-column-text', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Step 1: Fetch original text from source column
-  const query = `
-    query {
-      items(ids: ${itemId}) {
-        column_values(ids: ["${sourceColumnId}"]) {
+  // Step 1: Fetch original text
+  const fetchQuery = `
+    query ($itemId: [Int]) {
+      items(ids: $itemId) {
+        column_values {
           id
           text
         }
@@ -36,9 +32,12 @@ app.post('/edit-column-text', async (req, res) => {
   `;
 
   try {
-    const response = await axios.post(
+    const fetchResponse = await axios.post(
       'https://api.monday.com/v2',
-      { query },
+      {
+        query: fetchQuery,
+        variables: { itemId: Number(itemId) }
+      },
       {
         headers: {
           Authorization: MONDAY_API_TOKEN,
@@ -47,31 +46,40 @@ app.post('/edit-column-text', async (req, res) => {
       }
     );
 
-    const originalText = response.data.data.items[0]?.column_values[0]?.text;
+    const columns = fetchResponse.data.data.items[0].column_values;
+    const sourceColumn = columns.find(col => col.id === sourceColumnId);
+    const originalText = sourceColumn?.text;
 
     if (!originalText) {
       return res.status(404).json({ error: 'No text found in source column' });
     }
 
-    const newText = NameToEmail(originalText);
+    const newText = transformText(originalText);
 
-    // Step 2: Write the edited text to the target column
+    // Step 2: Update the target column using GraphQL variables
     const mutation = `
-      mutation  ($itemId: Int!, $boardId: Int!, $columnId: String!, $value: JSON!) {
+      mutation ($itemId: Int!, $boardId: Int!, $columnId: String!, $value: JSON!) {
         change_column_value(
-          item_id: ${itemId},
-          board_id: ${BOARD_ID},
-          column_id: "${targetColumnId}",
-          value: "${JSON.stringify(newText)}"
+          item_id: $itemId,
+          board_id: $boardId,
+          column_id: $columnId,
+          value: $value
         ) {
           id
         }
       }
     `;
 
+    const variables = {
+      itemId: Number(itemId),
+      boardId: Number(BOARD_ID),
+      columnId: targetColumnId,
+      value: JSON.stringify(newText)
+    };
+
     const updateResponse = await axios.post(
       'https://api.monday.com/v2',
-      { query: mutation },
+      { query: mutation, variables },
       {
         headers: {
           Authorization: MONDAY_API_TOKEN,
@@ -88,8 +96,8 @@ app.post('/edit-column-text', async (req, res) => {
       result: updateResponse.data
     });
 
-  } catch (err) {
-    console.error('Error:', err.response?.data || err.message);
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -97,5 +105,3 @@ app.post('/edit-column-text', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
