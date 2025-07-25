@@ -1,0 +1,10 @@
+features:
+  - kind: automation
+    name: Generate Email on Item Creation
+    triggers:
+      - title: When an item is created
+        kind: item_created
+    actions:
+      - title: Generate email from item name
+        kind: webhook
+        url: https://<your-app-name>.onrender.com/generate-email
