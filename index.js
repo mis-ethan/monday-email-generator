@@ -1,58 +1,91 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const axios = require("axios");
-require("dotenv").config();
+const fetch = require("node-fetch");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+const MONDAY_API_URL = "https://api.monday.com/v2";
+const API_TOKEN = process.env.MONDAY_API_TOKEN;
+
 app.use(bodyParser.json());
+
+function nameToEmail(name, domain = "example.com") {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-zA-Z\s]/g, '') // remove special characters
+    .replace(/\s+/g, '.') + '@' + domain;
+}
 
 app.post("/generate-email", async (req, res) => {
   try {
-    const { inputFields, event } = req.body;
+    const { event } = req.body;
 
     const itemId = event.pulseId;
     const boardId = event.boardId;
-    const nameColumnId = inputFields.name_column;
-    const emailColumnId = inputFields.email_column;
 
-    const name = event.column_values.find(c => c.id === nameColumnId)?.text;
+    // 1. Fetch item name
+    const query = {
+      query: `query {
+        items(ids: ${itemId}) {
+          name
+        }
+      }`
+    };
 
-    if (!name) {
-      return res.status(400).json({ error: "Name column is empty or missing." });
+    const itemResponse = await fetch(MONDAY_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: API_TOKEN
+      },
+      body: JSON.stringify(query)
+    });
+
+    const itemData = await itemResponse.json();
+    const itemName = itemData?.data?.items[0]?.name;
+
+    if (!itemName) {
+      return res.status(400).json({ error: "Item name not found." });
     }
 
-    // Generate email
-    const [first, last] = name.toLowerCase().split(" ");
-    const email = `${first}.${last}@ochsinc.org`;
+    const email = nameToEmail(itemName, "yourdomain.com"); // Replace with your actual domain
 
-    const query = `
-      mutation {
+    // 2. Update email column
+    const mutation = {
+      query: `mutation {
         change_column_value(
           board_id: ${boardId},
           item_id: ${itemId},
-          column_id: "${emailColumnId}",
-          value: "\\"${email}\\""
+          column_id: "email",
+          value: "{\\"email\\": \\"${email}\\", \\"text\\": \\"${email}\\"}"
         ) {
           id
         }
-      }
-    `;
+      }`
+    };
 
-    await axios.post("https://api.monday.com/v2", { query }, {
+    const updateResponse = await fetch(MONDAY_API_URL, {
+      method: "POST",
       headers: {
-        Authorization: process.env.MONDAY_API_TOKEN,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+        Authorization: API_TOKEN
+      },
+      body: JSON.stringify(mutation)
     });
 
-    res.json({ success: true, email });
-  } catch (error) {
-    console.error("Error generating email:", error);
-    res.status(500).json({ error: "Failed to generate email." });
+    const updateData = await updateResponse.json();
+    res.json({ success: true, data: updateData });
+  } catch (err) {
+    console.error("Error processing request:", err);
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 
-const PORT = process.env.PORT || 3000;
+app.get("/", (req, res) => {
+  res.send("Monday.com Email Generator is running.");
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
