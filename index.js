@@ -57,7 +57,7 @@ app.post('/edit-column-text', async (req, res) => {
 
     // Step 2: Write the edited text to the target column
     const mutation = `
-      mutation {
+      mutation  ($itemId: Int!, $boardId: Int!, $columnId: String!, $value: JSON!) {
         change_column_value(
           item_id: ${itemId},
           board_id: ${BOARD_ID},
