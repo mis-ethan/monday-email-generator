@@ -58,7 +58,7 @@ app.post('/edit-column-text', async (req, res) => {
 
     // Step 2: Update the target column using GraphQL variables
     const mutation = `
-      mutation ($itemId: Int!, $boardId: Int!, $columnId: String!, $value: JSON!) {
+      mutation ($itemId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
         change_column_value(
           item_id: $itemId,
           board_id: $boardId,
