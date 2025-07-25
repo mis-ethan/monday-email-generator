@@ -7,4 +7,4 @@ features:
     actions:
       - title: Generate email from item name
         kind: webhook
-        url: https://<your-app-name>.onrender.com/generate-email
+        url: https://monday-email-generator.onrender.com/generate-email
