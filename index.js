@@ -23,7 +23,7 @@ app.post("/generate-email", async (req, res) => {
 
     // Generate email
     const [first, last] = name.toLowerCase().split(" ");
-    const email = `${first}.${last}@example.com`;
+    const email = `${first}.${last}@ochsinc.org`;
 
     const query = `
       mutation {
