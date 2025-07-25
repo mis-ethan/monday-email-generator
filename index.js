@@ -21,7 +21,7 @@ app.post('/edit-column-text', async (req, res) => {
 
   // Step 1: Fetch original text
   const fetchQuery = `
-    query ($itemId: [Int]) {
+    query ($itemId: [ID!]) {
       items(ids: $itemId) {
         column_values {
           id
