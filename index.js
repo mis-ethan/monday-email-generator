@@ -8,8 +8,15 @@ const MONDAY_API_TOKEN = process.env.MONDAY_API_TOKEN;
 const BOARD_ID = process.env.BOARD_ID;
 
 // Example transformation function
-function transformText(text) {
-  return `[Edited] ${text}`;
+function transformText(name, domain = "ochsinc.org") {
+  if (!name) return "";
+
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z\s]/gi, "")   // remove non-letter characters
+    .replace(/\s+/g, ".")        // replace spaces with dots
+    + "@" + domain;
 }
 
 app.post('/edit-column-text', async (req, res) => {
@@ -55,7 +62,7 @@ app.post('/edit-column-text', async (req, res) => {
     }
 
     const newText = transformText(originalText);
-
+    
     // Step 2: Update the target column using GraphQL variables
     const mutation = `
       mutation ($itemId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
