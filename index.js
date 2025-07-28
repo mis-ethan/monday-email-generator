@@ -19,12 +19,10 @@ function transformText(name, domain = "ochsinc.org") {
     + "@" + domain;
 }
 
-app.post('/generate-email', (req, res) => {
+app.post('/generate-email', async (req, res) => {
+  const { itemId, sourceColumnId, targetColumnId } = req.body;
+  
   console.log('Received request from Monday:', req.headers, req.body);
-  return res.status(200).send('OK');
-});
-/*app.post('/generate-email', async (req, res) => {
-  const { itemId, sourceColumnId, targetColumnId } = req.body;*/
 
   if (!itemId || !sourceColumnId || !targetColumnId) {
     return res.status(400).json({ error: 'Missing required fields' });
