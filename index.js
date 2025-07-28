@@ -80,7 +80,7 @@ app.post('/edit-column-text', async (req, res) => {
     const variables = {
       itemId: Number(itemId),
       boardId: Number(BOARD_ID),
-      columnId: targetColumnId,
+      columnId: JSON.stringify(targetColumnId),
       value: JSON.stringify(newText)
     };
 
