@@ -82,7 +82,7 @@ app.post('/edit-column-text', async (req, res) => {
       boardId: Number(BOARD_ID),
       columnId: targetColumnId,
       value: JSON.stringify({
-        text: originalText,
+        text: newText,
         email: newText,
       })
     };
