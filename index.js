@@ -19,7 +19,7 @@ function transformText(name, domain = "ochsinc.org") {
     + "@" + domain;
 }
 
-app.post('/edit-column-text', async (req, res) => {
+app.post('/generate-email', async (req, res) => {
   const { itemId, sourceColumnId, targetColumnId } = req.body;
 
   if (!itemId || !sourceColumnId || !targetColumnId) {
@@ -98,7 +98,7 @@ app.post('/edit-column-text', async (req, res) => {
       }
     );
 
-    res.json({
+    res.status(200).json({
       success: true,
       itemId,
       originalText,
