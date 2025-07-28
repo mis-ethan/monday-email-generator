@@ -5,7 +5,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const MONDAY_API_TOKEN = process.env.MONDAY_API_TOKEN;
-const BOARD_ID = process.env.BOARD_ID;
+//const BOARD_ID = process.env.BOARD_ID;
 
 // Example transformation function
 function transformText(name, domain = "ochsinc.org") {
@@ -25,7 +25,8 @@ app.post('/generate-email', async (req, res) => {
       inboundFieldValues: {
         itemId,
         sourceColumnId,
-        targetColumnId
+        targetColumnId,
+        boardId
       } = {}
     } = {}
   } = req.body;
