@@ -112,7 +112,7 @@ app.post('/generate-email', async (req, res) => {
       }
     );
 
-    res..json({
+    res.json({
       success: true,
       itemId,
       originalText,
