@@ -100,7 +100,7 @@ app.post('/generate-email', async (req, res) => {
       }
     );
 
-    res.status(200).send('OK')json({
+    res.status(200).send('OK').json({
       success: true,
       itemId,
       originalText,
