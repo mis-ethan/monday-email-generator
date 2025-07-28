@@ -81,7 +81,10 @@ app.post('/edit-column-text', async (req, res) => {
       itemId: Number(itemId),
       boardId: Number(BOARD_ID),
       columnId: JSON.stringify(targetColumnId),
-      value: JSON.stringify(newText)
+      value: JSON.stringify({
+        text: originalText,
+        email: newText,
+      })
     };
 
     const updateResponse = await axios.post(
