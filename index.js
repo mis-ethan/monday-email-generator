@@ -20,7 +20,8 @@ function transformText(name, domain = "ochsinc.org") {
 }
 
 app.post('/generate-email', async (req, res) => {
-  const { itemId, sourceColumnId, targetColumnId } = req.body.payload?.inboundFieldValues;
+  const { itemId, sourceColumnId, targetColumnId } = req.body;
+  
   
   //console.log('Received request from Monday:', req.headers, req.body);
 
