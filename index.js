@@ -22,10 +22,11 @@ function transformText(name, domain = "ochsinc.org") {
 app.post('/generate-email', async (req, res) => {
   const { itemId, sourceColumnId, targetColumnId } = req.body;
   
-  console.log('Received request from Monday:', req.headers, req.body);
+  //console.log('Received request from Monday:', req.headers, req.body);
 
   if (!itemId || !sourceColumnId || !targetColumnId) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    console.log('missing required fields');
+    return res.status(200).send('OK');
   }
 
   // Step 1: Fetch original text
@@ -60,7 +61,8 @@ app.post('/generate-email', async (req, res) => {
     const originalText = sourceColumn?.text;
 
     if (!originalText) {
-      return res.status(404).json({ error: 'No text found in source column' });
+      console.log('no data in source column');
+      return res.status(200).send('OK');
     }
 
     const newText = transformText(originalText);
