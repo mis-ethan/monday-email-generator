@@ -33,7 +33,7 @@ app.post('/generate-email', async (req, res) => {
   
   
   
-  console.log('Received request from Monday:', req.headers, req.body);
+  //console.log('Received request from Monday:', req.headers, req.body);
 
   if (!itemId || !sourceColumnId || !targetColumnId || !boardId) {
     console.log('missing required fields');
