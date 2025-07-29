@@ -35,7 +35,7 @@ app.post('/generate-email', async (req, res) => {
   
   //console.log('Received request from Monday:', req.headers, req.body);
 
-  if (!itemId || !sourceColumnId || !targetColumnId) {
+  if (!itemId || !sourceColumnId || !targetColumnId || !boardId) {
     console.log('missing required fields');
     return res.status(200).send('OK');
   }
@@ -94,7 +94,7 @@ app.post('/generate-email', async (req, res) => {
 
     const variables = {
       itemId: Number(itemId),
-      boardId: Number(BOARD_ID),
+      boardId: Number(boardId),
       columnId: targetColumnId,
       value: JSON.stringify({
         text: newText,
