@@ -127,12 +127,13 @@ app.post('/generate-email', async (req, res) => {
   }
 });
 
+//loaner fob
 app.post('/loaner-fob', async (req, res) => {
     const {
+    //should recieve
     payload: {
       inboundFieldValues: {
         itemId,
-        fobNumber,
         numberColumnId,
         fobStatusId,
         boardId
@@ -144,13 +145,26 @@ app.post('/loaner-fob', async (req, res) => {
   
   //console.log('Received request from Monday:', req.headers, req.body);
 
-  if (!itemId || !fobNumber || !fobStatusId || !boardId || !numberColumnId) {
+  //check if empty
+  if (!itemId || !fobStatusId || !boardId || !numberColumnId) {
     console.log('missing required fields');
     return res.status(200).send('OK');
   }
 
-  // Step 1: Fetch the fob number
-  const fetchQuery = `
+  // Step 1: Set up query
+  const fetchQuery1 = `
+    query {
+      items(ids: $itemID) {
+        name
+        column_values(ids: [$numberColumnId]) {
+          id
+          text
+        }
+      }
+    }
+  `;
+    
+  const fetchQuery2 = `
     query {
       items_page_by_column_values(
         board_id: $boardId,
@@ -166,7 +180,28 @@ app.post('/loaner-fob', async (req, res) => {
       }
     }
   `;
-  
+
+  //query one to get fob #
+  try{
+    const fetchResponse1 = await axios.post(
+      'https://api.monday.com/v2',
+      {
+        query: fetchQuery1,
+        variables: { itemId: Number(itemId) }
+      },
+      {
+        headers: {
+          Authorization: MONDAY_API_TOKEN,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    const fobNumber = fetchResponse1.data.data.items?.column_values.text;
+  }
+  catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    res.status(200).send("OK");
+  }
 
   try {
     const fetchResponse = await axios.post(
