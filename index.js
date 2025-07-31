@@ -127,6 +127,125 @@ app.post('/generate-email', async (req, res) => {
   }
 });
 
+app.post('/loaner-fob', async (req, res) => {
+    const {
+    payload: {
+      inboundFieldValues: {
+        itemId,
+        fobNumber,
+        numberColumnId,
+        fobStatusId,
+        boardId
+      } = {}
+    } = {}
+  } = req.body;
+  
+  
+  
+  //console.log('Received request from Monday:', req.headers, req.body);
+
+  if (!itemId || !fobNumber || !fobStatusId || !boardId || !numberColumnId) {
+    console.log('missing required fields');
+    return res.status(200).send('OK');
+  }
+
+  // Step 1: Fetch the fob number
+  const fetchQuery = `
+    query {
+      items_page_by_column_values(
+        board_id: $boardId,
+        column_id: $numberColumnId,
+        column_value: $fobNumber
+      ) {
+        items {
+          id
+          column_values(ids: [$numberColumnId, $fobStatusId]) {
+            text
+          }
+        }
+      }
+    }
+  `;
+  
+
+  try {
+    const fetchResponse = await axios.post(
+      'https://api.monday.com/v2',
+      {
+        query: fetchQuery,
+        variables: { itemId: Number(itemId) }
+      },
+      {
+        headers: {
+          Authorization: MONDAY_API_TOKEN,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    const columns = fetchResponse.data.data.items;
+    //const oldItem = 
+    //const newItem = 
+
+    if (!columns) {
+      console.log('no fob with that number currently in system');
+      return res.status(200).send('OK');
+    }
+
+    console.log(columns);
+
+    //get other fob itemID
+    /*
+    // Step 2: Delete old item entry if valid request
+    const mutation = `
+      mutation ($itemId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
+        change_column_value(
+          item_id: $itemId,
+          board_id: $boardId,
+          column_id: $columnId,
+          value: $value
+        ) {
+          id
+        }
+      }
+    `;
+
+    const variables = {
+      itemId: Number(itemId),
+      boardId: Number(boardId),
+      columnId: targetColumnId,
+      value: JSON.stringify({
+        text: newText,
+        email: newText,
+      })
+    };
+
+    const updateResponse = await axios.post(
+      'https://api.monday.com/v2',
+      { query: mutation, variables },
+      {
+        headers: {
+          Authorization: MONDAY_API_TOKEN,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    res.json({
+      success: true,
+      itemId,
+      originalText,
+      newText,
+      result: updateResponse.data
+    });*/
+    return res.status(200).send('OK');
+
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
