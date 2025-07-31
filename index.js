@@ -143,7 +143,7 @@ app.post('/loaner-fob', async (req, res) => {
   
   
   
-  //console.log('Received request from Monday:', req.headers, req.body);
+  console.log('Received request from Monday:', req.headers, req.body);
 
   //check if empty
   if (!itemId || !fobStatusId || !boardId || !numberColumnId) {
@@ -152,7 +152,7 @@ app.post('/loaner-fob', async (req, res) => {
   }
 
   // Step 1: Set up query
-  const fetchQuery1 = `
+  /*const fetchQuery1 = `
     query {
       items(ids: $itemId) {
         name
@@ -164,22 +164,6 @@ app.post('/loaner-fob', async (req, res) => {
     }
   `;
     
-  const fetchQuery2 = `
-    query {
-      items_page_by_column_values(
-        board_id: $boardId,
-        column_id: $numberColumnId,
-        column_value: $fobNumber
-      ) {
-        items {
-          id
-          column_values(ids: [$numberColumnId, $fobStatusId]) {
-            text
-          }
-        }
-      }
-    }
-  `;
 
   //query one to get fob #
   try{
@@ -203,6 +187,23 @@ app.post('/loaner-fob', async (req, res) => {
     res.status(200).send("OK");
   }
 
+  const fetchQuery2 = `
+    query {
+      items_page_by_column_values(
+        board_id: $boardId,
+        column_id: $numberColumnId,
+        column_value: $fobNumber
+      ) {
+        items {
+          id
+          column_values(ids: [$numberColumnId, $fobStatusId]) {
+            text
+          }
+        }
+      }
+    }
+  `;
+  
   try {
     const fetchResponse = await axios.post(
       'https://api.monday.com/v2',
@@ -279,7 +280,7 @@ app.post('/loaner-fob', async (req, res) => {
     console.error('Error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Internal server error' });
   }
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
