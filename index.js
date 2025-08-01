@@ -215,7 +215,7 @@ app.post('/loaner-fob', async (req, res) => {
   `;
   
   try {
-    const fetchResponse = await axios.post(
+    const fetchResponse2 = await axios.post(
       'https://api.monday.com/v2',
       {
         query: fetchQuery2,
@@ -229,14 +229,17 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
 
-    const columns = fetchResponse.data.data.items;
+    //const columns = fetchResponse2.data.data.items;
     //const oldItem = 
     //const newItem = 
 
-    if (!columns) {
+    
+    
+    if (!fetchResponse2) {
       console.log('no fob with that number currently in system');
       return res.status(200).send('OK');
     }
+    else{console.log(fetchResponse2)}
 
     //console.log(columns);
 
