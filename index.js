@@ -190,15 +190,13 @@ app.post('/loaner-fob', async (req, res) => {
   }
 
   const fetchQuery2 = `
-    query ($numberColumnId: String!, $fobStatusId: String!, $fobNumber: String!, $boardId: ID!){
-      items_by_column_values(
-        board_id: $boardId,
-        column_id: $numberColumnId,
-        column_value: $fobNumber
-      ) {
+    query ($boardId: Int!) {
+      boards(ids: [$boardId]) {
         items {
           id
-          column_values(ids: [$numberColumnId, $fobStatusId]) {
+          name
+          column_values {
+            id
             text
           }
         }
@@ -221,7 +219,9 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
 
-    const columns = fetchResponse.data.data.items;
+    console.log(fetchResponse);
+
+    /*const columns = fetchResponse.data.data.items;
     //const oldItem = 
     //const newItem = 
 
@@ -230,7 +230,7 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
 
-    console.log(columns);
+    console.log(columns);*/
 
     //get other fob itemID
     /*
