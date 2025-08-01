@@ -274,12 +274,12 @@ app.post('/loaner-fob', async (req, res) => {
       newText,
       result: updateResponse.data
     });*/
-    return res.status(200).send('OK');/*
+    return res.status(200).send('OK');
 
   } catch (error) {
     console.error('Error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Internal server error' });
-  }*/
+  }
 });
 
 app.listen(PORT, () => {
