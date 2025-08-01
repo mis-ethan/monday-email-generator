@@ -196,7 +196,7 @@ app.post('/loaner-fob', async (req, res) => {
           items {
             id
             name
-            column_values(ids: ["number", "date_mktctm7w"]) {
+            column_values(ids: $fobStatusId) {
               id
               text
             }
