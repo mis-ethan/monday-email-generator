@@ -180,7 +180,10 @@ app.post('/loaner-fob', async (req, res) => {
         }
       }
     );
-    const fobNumber = fetchResponse1.data.data.items;
+    const columns = fetchResponse1.data.data.items[0].column_values;
+    const numberColumn = columns.find(col => col.id === numberColumnId);
+    const fobNumber = numberColumn?.text; 
+    
     console.log(fobNumber);
     if(fobNumber){
       console.log('fob number ');
