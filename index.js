@@ -153,7 +153,7 @@ app.post('/loaner-fob', async (req, res) => {
 
   // Step 1: Set up query
   const fetchQuery1 = `
-    query {
+    query($itemId: [ID!], $numberColumnId: [ID!]){
       items(ids: $itemId) {
         name
         column_values(ids: $numberColumnId) {
@@ -186,7 +186,7 @@ app.post('/loaner-fob', async (req, res) => {
     console.error('Error:', error.response?.data || error.message);
     res.status(200).send("OK");
   }
-/*
+
   const fetchQuery2 = `
     query {
       items_page_by_column_values(
