@@ -238,7 +238,7 @@ app.post('/loaner-fob', async (req, res) => {
       console.log('no fob with that number currently in system');
       return res.status(200).send('OK');
     }
-    else{console.log(fetchResponse2)}
+    else{console.log(fetchResponse2.data.data?.errors)}
 
     //console.log(columns);
 
