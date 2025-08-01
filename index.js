@@ -181,16 +181,19 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
     const fobNumber = fetchResponse1.data.data.items?.column_values?.text;
-    if(fobNumber)
+    if(fobNumber){
       console.log('fob number ');
+      console.log(fobNumber)
+    }
   }
   catch (error) {
     console.error('Error:', error.response?.data || error.message);
     return res.status(200).send("OK");
   }
 
+  /*
   const fetchQuery2 = `
-    query ($boardId: [ID!], $numberColumnId: [ID!], $fobNumber: [String!], $fobStatusId: String!){
+    query ($boardId: [ID!], $numberColumnId: [ID!], $fobNumber: [String!], $fobStatusId: [String!]){
       boards (ids: $boardId) {
         items_page (query_params: {rules: [{column_id: $numberColumnId, compare_value: $fobNumber}]}) {
           items {
@@ -277,13 +280,13 @@ app.post('/loaner-fob', async (req, res) => {
       originalText,
       newText,
       result: updateResponse.data
-    });*/
+    });
     return res.status(200).send('OK');
 
   } catch (error) {
     console.error('Error:', error.response?.data || error.message);
     return res.status(500).json({ error: 'Internal server error' });
-  }
+  }*/
 });
 
 app.listen(PORT, () => {
