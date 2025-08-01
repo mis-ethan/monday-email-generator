@@ -199,7 +199,7 @@ app.post('/loaner-fob', async (req, res) => {
 
   
   const fetchQuery2 = `
-    query {
+    query ($boardId: [ID!]){
           boards(ids: $boardId) {
               id
               name
@@ -216,6 +216,7 @@ app.post('/loaner-fob', async (req, res) => {
       'https://api.monday.com/v2',
       {
         query: fetchQuery2,
+        variables: { boardId: Number(itemId) }
       },
       {
         headers: {
