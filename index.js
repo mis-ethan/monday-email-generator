@@ -219,7 +219,6 @@ app.post('/loaner-fob', async (req, res) => {
       'https://api.monday.com/v2',
       {
         query: fetchQuery2,
-        variables: { itemId: Number(itemId) }
       },
       {
         headers: {
