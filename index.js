@@ -203,10 +203,14 @@ app.post('/loaner-fob', async (req, res) => {
           boards(ids: $boardId) {
               id
               name
-              column_values{
-                   id
-                   text
-             }
+              columns{
+              id
+              name
+                  column_values{
+                       id
+                       text
+                 }
+              }
           }
     }
   `;
