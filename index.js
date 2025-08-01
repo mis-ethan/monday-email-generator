@@ -185,7 +185,7 @@ app.post('/loaner-fob', async (req, res) => {
   }
   catch (error) {
     console.error('Error:', error.response?.data || error.message);
-    res.status(200).send("OK");
+    return res.status(200).send("OK");
   }
 
   const fetchQuery2 = `
@@ -279,7 +279,7 @@ app.post('/loaner-fob', async (req, res) => {
 
   } catch (error) {
     console.error('Error:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
