@@ -199,8 +199,8 @@ app.post('/loaner-fob', async (req, res) => {
 
   
   const fetchQuery2 = `
-    query ($boardId: [ID!]){
-          board(id: $boardId) {
+    query {
+          boards(ids: $boardId) {
               id
               name
               column_values{
