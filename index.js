@@ -143,7 +143,7 @@ app.post('/loaner-fob', async (req, res) => {
   
   
   
-  console.log('Received request from Monday:', req.headers, req.body);
+  //console.log('Received request from Monday:', req.headers, req.body);
 
   //check if empty
   if (!itemId || !fobStatusId || !boardId || !numberColumnId) {
@@ -153,7 +153,7 @@ app.post('/loaner-fob', async (req, res) => {
 
   // Step 1: Set up query
   const fetchQuery1 = `
-    query($itemId: [ID!], $numberColumnId: [ID!]){
+    query($itemId: [ID!], $numberColumnId: [String!]){
       items(ids: $itemId) {
         name
         column_values(ids: $numberColumnId) {
