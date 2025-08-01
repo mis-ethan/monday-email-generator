@@ -181,6 +181,7 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
     const fobNumber = fetchResponse1.data.data.items?.column_values.text;
+    console.log('fob number ', fobNumber)
   }
   catch (error) {
     console.error('Error:', error.response?.data || error.message);
@@ -196,7 +197,7 @@ app.post('/loaner-fob', async (req, res) => {
       ) {
         items {
           id
-          column_values(ids: [$numberColumnId, $fobStatusId]) {
+          column_values(ids: $numberColumnId, $fobStatusId) {
             text
           }
         }
