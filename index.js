@@ -192,7 +192,7 @@ app.post('/loaner-fob', async (req, res) => {
   const fetchQuery2 = `
     query ($boardId: [ID!], $numberColumnId: [ID!], $fobNumber: [Number!], $fobStatusId: [ID!]){
       boards (ids: $boardId) {
-        items_page (query_params: {rules: [{column_id: #numberColumnId, compare_value: $fobNumber}]}) {
+        items_page (query_params: {rules: [{column_id: $numberColumnId, compare_value: $fobNumber}]}) {
           items {
             id
             name
@@ -289,3 +289,4 @@ app.post('/loaner-fob', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
