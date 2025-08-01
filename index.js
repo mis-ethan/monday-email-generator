@@ -129,6 +129,7 @@ app.post('/generate-email', async (req, res) => {
 
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
+    console.log('Request recieved...');
     const {
     //should recieve
     payload: {
@@ -287,6 +288,7 @@ app.post('/loaner-fob', async (req, res) => {
       newText,
       result: updateResponse.data
     });*/
+    console.log('fob status updated');
     return res.status(200).send('OK');
 
   } catch (error) {
