@@ -242,8 +242,9 @@ app.post('/loaner-fob', async (req, res) => {
 
     console.log(columns);
 
-    //get other fob itemID
-    /*
+    /*get other fob itemID
+    
+    
     // Step 2: Delete old item entry if valid request
     const mutation = `
       mutation ($itemId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
@@ -285,7 +286,7 @@ app.post('/loaner-fob', async (req, res) => {
       originalText,
       newText,
       result: updateResponse.data
-    });
+    });*/
     return res.status(200).send('OK');
 
   } catch (error) {
