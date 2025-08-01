@@ -190,14 +190,16 @@ app.post('/loaner-fob', async (req, res) => {
   }
 
   const fetchQuery2 = `
-    query ($boardId: ID!) {
-      board(id: $boardId) {
-        items {
-          id
-          name
-          column_values {
+    query {
+      boards (ids: $boardId) {
+        items_page (query_params: {rules: [{column_id: numberColumnId, compare_value: [fobNumber]}]}) {
+          items {
             id
-            text
+            name
+            column_values(ids: ["number", "date_mktctm7w"]) {
+              id
+              text
+            }
           }
         }
       }
