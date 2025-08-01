@@ -185,18 +185,18 @@ app.post('/loaner-fob', async (req, res) => {
     const fobNumber = numberColumn?.text; 
     
     console.log(fobNumber);
-    if(fobNumber){
-      console.log('fob number ');
-      console.log(fobNumber)
+    if(!fobNumber){
+      console.log('fob number empty');
+      return res.status(200).send("OK");
     }
-    return res.status(200).send("OK");
+    //return res.status(200).send("OK");
   }
   catch (error) {
     console.error('Error:', error.response?.data || error.message);
     return res.status(200).send("OK");
   }
 
-  /*
+  
   const fetchQuery2 = `
     query ($boardId: [ID!], $numberColumnId: [ID!], $fobNumber: [String!], $fobStatusId: [String!]){
       boards (ids: $boardId) {
@@ -231,7 +231,7 @@ app.post('/loaner-fob', async (req, res) => {
 
     console.log(fetchResponse);
 
-    /*const columns = fetchResponse.data.data.items;
+    const columns = fetchResponse.data.data.items;
     //const oldItem = 
     //const newItem = 
 
@@ -240,7 +240,7 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
 
-    console.log(columns);*/
+    console.log(columns);
 
     //get other fob itemID
     /*
@@ -291,7 +291,7 @@ app.post('/loaner-fob', async (req, res) => {
   } catch (error) {
     console.error('Error:', error.response?.data || error.message);
     return res.status(500).json({ error: 'Internal server error' });
-  }*/
+  }
 });
 
 app.listen(PORT, () => {
