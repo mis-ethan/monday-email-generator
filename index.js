@@ -210,7 +210,7 @@ app.post('/loaner-fob', async (req, res) => {
     const fetchResponse = await axios.post(
       'https://api.monday.com/v2',
       {
-        query: fetchQuery,
+        query: fetchQuery2,
         variables: { itemId: Number(itemId) }
       },
       {
