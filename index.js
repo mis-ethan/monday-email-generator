@@ -190,8 +190,8 @@ app.post('/loaner-fob', async (req, res) => {
   }
 
   const fetchQuery2 = `
-    query ($boardId: Int!) {
-      boards(ids: [$boardId]) {
+    query ($boardId: ID!) {
+      board(id: $boardId) {
         items {
           id
           name
