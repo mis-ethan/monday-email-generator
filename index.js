@@ -189,7 +189,7 @@ app.post('/loaner-fob', async (req, res) => {
   }
 
   const fetchQuery2 = `
-    query {
+    query ($numberColumnId: [String!], $fobStatusId: [String!]){
       items_page_by_column_values(
         board_id: $boardId,
         column_id: $numberColumnId,
@@ -197,7 +197,7 @@ app.post('/loaner-fob', async (req, res) => {
       ) {
         items {
           id
-          column_values(ids: $numberColumnId, $fobStatusId) {
+          column_values(ids: [$numberColumnId, $fobStatusId]) {
             text
           }
         }
