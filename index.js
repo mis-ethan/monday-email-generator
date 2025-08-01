@@ -229,8 +229,6 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
 
-    console.log(fetchResponse);
-
     const columns = fetchResponse.data.data.items;
     //const oldItem = 
     //const newItem = 
@@ -240,7 +238,7 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
 
-    console.log(columns);
+    //console.log(columns);
 
     /*get other fob itemID
     
