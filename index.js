@@ -181,10 +181,12 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
     const fobNumber = fetchResponse1.data.data.items?.column_values?.text;
+    console.log(fetchResponse1);
     if(fobNumber){
       console.log('fob number ');
       console.log(fobNumber)
     }
+    return res.status(200).send("OK");
   }
   catch (error) {
     console.error('Error:', error.response?.data || error.message);
