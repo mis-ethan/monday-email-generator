@@ -203,12 +203,14 @@ app.post('/loaner-fob', async (req, res) => {
           boards(ids: $boardId) {
               id
               name
-                  columns{
-                      id
-                      title
-                      
-                         
-                  }
+              items{
+                id
+                column_values{
+                  id
+                  name
+                  text
+                }
+              }
           }
     }
   `;
@@ -238,7 +240,7 @@ app.post('/loaner-fob', async (req, res) => {
       console.log('no fob with that number currently in system');
       return res.status(200).send('OK');
     }
-    else{console.log(fetchResponse2.data)}
+    else{console.log(fetchResponse2.data.data.boards.items)}
 
     //console.log(columns);
 
