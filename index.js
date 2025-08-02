@@ -206,7 +206,7 @@ app.post('/loaner-fob', async (req, res) => {
                   columns{
                       id
                       title
-                      text
+                      
                          
                   }
           }
