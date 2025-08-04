@@ -241,12 +241,20 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
     else{
-      const data =fetchResponse2.data.data.boards[0];
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-            console.log(`${key}: ${data[key]}`);
+      const obj =fetchResponse2.data;
+        function traverseObject(obj) {
+            for (const key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) { // Ensure it's an own property
+                    const value = obj[key];
+                    if (typeof value === 'object' && value !== null) {
+                        console.log(`Key: ${key}, Value is an object. Recursing...`);
+                        traverseObject(value); // Recursive call for nested objects
+                    } else {
+                        console.log(`Key: ${key}, Value: ${value}`);
+                    }
+                }
+            }
         }
-      }
     }
 
     //console.log(columns);
