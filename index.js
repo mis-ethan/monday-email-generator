@@ -222,7 +222,7 @@ app.post('/loaner-fob', async (req, res) => {
       'https://api.monday.com/v2',
       {
         query: fetchQuery2,
-        variables: { boardId: Number(itemId) }
+        variables: { boardId: Number(boardId) }
       },
       {
         headers: {
@@ -242,7 +242,7 @@ app.post('/loaner-fob', async (req, res) => {
       console.log('no fob with that number currently in system');
       return res.status(200).send('OK');
     }
-    else{console.log(fetchResponse2.data.data.boards)}
+    else{console.log(fetchResponse2.data.data.boards.items_page?.items)}
 
     //console.log(columns);
 
