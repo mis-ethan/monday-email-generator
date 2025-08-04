@@ -242,7 +242,6 @@ app.post('/loaner-fob', async (req, res) => {
     }
     else{
       const obj =fetchResponse2.data;
-        function traverseObject(obj) {
             for (const key in obj) {
                 if (Object.prototype.hasOwnProperty.call(obj, key)) { // Ensure it's an own property
                     const value = obj[key];
@@ -254,7 +253,6 @@ app.post('/loaner-fob', async (req, res) => {
                     }
                 }
             }
-        }
     }
 
     //console.log(columns);
