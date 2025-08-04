@@ -19,6 +19,22 @@ function transformText(name, domain = "ochsinc.org") {
     + "@" + domain;
 }
 
+//print JSON object to console
+fucntion traverseObject(obj){
+  for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) { // Ensure it's an own property
+          const value = obj[key];
+          if (typeof value === 'object' && value !== null) {
+              console.log(`Key: ${key}, Value is an object. Recursing...`);
+              traverseObject(value); // Recursive call for nested objects
+          } else {
+              console.log(`Key: ${key}, Value: ${value}`);
+          }
+      }
+  }
+}
+
+
 app.post('/generate-email', async (req, res) => {
     const {
     payload: {
@@ -241,18 +257,8 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
     else{
-      const obj =fetchResponse2.data;
-            for (const key in obj) {
-                if (Object.prototype.hasOwnProperty.call(obj, key)) { // Ensure it's an own property
-                    const value = obj[key];
-                    if (typeof value === 'object' && value !== null) {
-                        console.log(`Key: ${key}, Value is an object. Recursing...`);
-                        traverseObject(value); // Recursive call for nested objects
-                    } else {
-                        console.log(`Key: ${key}, Value: ${value}`);
-                    }
-                }
-            }
+      const data =fetchResponse2.data;
+      traverseObject(data);
     }
 
     //console.log(columns);
