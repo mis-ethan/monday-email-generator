@@ -259,8 +259,8 @@ app.post('/loaner-fob', async (req, res) => {
     else{
       const data =fetchResponse2.data.data;
       let i = 0
-      for(i in fetchResponse2.data.data.boards[0].items_page){
-          console.log(fetchResponse2.data.data.boards[0].items_page.items[i]);
+      for(i in fetchResponse2.data.data.boards[0].items_page[0]){
+          console.log(fetchResponse2.data.data.boards[0].items_page[0].items[i]);
       }
       
       //traverseObject(data);
