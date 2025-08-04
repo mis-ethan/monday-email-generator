@@ -258,7 +258,8 @@ app.post('/loaner-fob', async (req, res) => {
     }
     else{
       const data =fetchResponse2.data;
-      traverseObject(data);
+      console.log(fetchResponse2.data.data.boards[0].items_page.items[0]);
+      //traverseObject(data);
     }
 
     //console.log(columns);
