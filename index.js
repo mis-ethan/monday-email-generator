@@ -20,7 +20,7 @@ function transformText(name, domain = "ochsinc.org") {
 }
 
 //print JSON object to console
-fucntion traverseObject(obj){
+function traverseObject(obj){
   for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) { // Ensure it's an own property
           const value = obj[key];
