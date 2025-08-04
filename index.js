@@ -241,9 +241,12 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
     else{
-      console.log(fetchResponse2.data.data.boards[0]);
-      console.log('/n');
-      console.log(fetchResponse2.data.data.boards[0][0]);
+      const data =fetchResponse2.data.data.boards[0];
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            console.log(`${key}: ${data[key]}`);
+        }
+      }
     }
 
     //console.log(columns);
