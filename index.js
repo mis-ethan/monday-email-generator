@@ -243,7 +243,7 @@ app.post('/loaner-fob', async (req, res) => {
     else{
       console.log(fetchResponse2.data.data.boards[0]);
       console.log('/n');
-      console.log(fetchResponse2.data.data.boards.[0][0]);
+      console.log(fetchResponse2.data.data.boards.[0].[0]);
     }
 
     //console.log(columns);
