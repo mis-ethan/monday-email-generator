@@ -260,6 +260,7 @@ app.post('/loaner-fob', async (req, res) => {
       const data =fetchResponse2.data.data;
       
       for(const itemKey in fetchResponse2.data.data.boards[0].items_page){
+        console.log("searching for items...");
         const item = fetchResponse2.data.data.boards[0].items_page[itemKey];
         const columns = item.column_values;
         for(const columnKey in columns){
