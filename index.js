@@ -257,7 +257,7 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
     else{
-      const data =fetchResponse2.data.data.boards;
+      const data =fetchResponse2.data.data.boards[1];
       
       /*for(const itemKey in fetchResponse2.data.data.boards[0].items_page){
         console.log("searching for items...");
