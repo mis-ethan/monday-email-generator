@@ -145,6 +145,7 @@ app.post('/generate-email', async (req, res) => {
 
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
+    var fobNumber ;
     console.log('Request recieved...');
     const {
     //should recieve
@@ -199,7 +200,7 @@ app.post('/loaner-fob', async (req, res) => {
     );
     const columns = fetchResponse1.data.data.items[0].column_values;
     const numberColumn = columns.find(col => col.id === numberColumnId);
-    const fobNumber = numberColumn?.text; 
+    fobNumber = numberColumn?.text; 
     
     console.log(fobNumber);
     if(!fobNumber){
