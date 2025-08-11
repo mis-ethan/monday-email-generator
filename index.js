@@ -145,7 +145,7 @@ app.post('/generate-email', async (req, res) => {
 
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
-    var fobNumber, fobStatus;
+    var fobNumber; var fobStatus;
     var columns;
     
     console.log('Request recieved...');
@@ -202,11 +202,11 @@ app.post('/loaner-fob', async (req, res) => {
     );
     columns = fetchResponse1.data.data.items[0].column_values;
     const numberColumn = columns.find(col => col.id === numberColumnId);
-    const statusColumn = columns.find(col => col.id === numberColumnId);
+    const statusColumn = columns.find(col => col.id === fobStatusId);
     fobNumber = numberColumn?.text;
     fobStatus = statusColumn?.text;
     
-    console.log("Fob "+ fobNumber + " status:" + fobStatus);
+    console.log("Fob "+ fobNumber + " status is " + fobStatus);
     if(!fobNumber){
       console.log('fob number empty');
       return res.status(200).send("OK");
