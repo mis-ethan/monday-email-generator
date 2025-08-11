@@ -287,7 +287,6 @@ app.post('/loaner-fob', async (req, res) => {
         //else{console.log(Object.entries(data[key].column_values[3].text));}
       }
       //traverseObject(data);
-    }
 
     //console.log(columns);
 
