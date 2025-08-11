@@ -271,7 +271,8 @@ app.post('/loaner-fob', async (req, res) => {
         }
       }*/
       for(key in item){
-          console.log("item name: " + Object.entries(item[key]).name);
+          let tempItemName = Object.entries(item[key])
+          console.log("item name: " + Object.entries(tempItemName[name]));
           if(Object.entries(item[key]).name == ("Fob " + fobNumber)){
               let cValues = Object.entries(item[key].column_values);
               let newStatus = columns.find(col => col.id === "status").text;
