@@ -257,7 +257,7 @@ app.post('/loaner-fob', async (req, res) => {
       return res.status(200).send('OK');
     }
     else{
-      let data =fetchResponse2.data.data.boards[0].items_page;
+      let data =fetchResponse2.data.data.boards[0].items_page.items;
       
       /*for(const itemKey in fetchResponse2.data.data.boards[0].items_page){
         console.log("searching for items...");
@@ -268,12 +268,10 @@ app.post('/loaner-fob', async (req, res) => {
         }
       }*/
       for(key in data){
-        console.log(Object.entries(data[key]));
-      }
-      console.log("............................................................");
-      data =fetchResponse2.data.data.boards[0].items_page.items;
-      for(key in data){
-        console.log(Object.entries(data[key]));
+          if(Object.entries(data[key].column_values) == fobNumber){
+                console.log("success");
+          }
+        else{console.log(Object.entries(data[key].column_values));}
       }
       //traverseObject(data);
     }
