@@ -176,7 +176,7 @@ app.post('/loaner-fob', async (req, res) => {
     query($itemId: [ID!], $numberColumnId: [String!]){
       items(ids: $itemId) {
         name
-        column_values(ids: [$numberColumnId, fobStatusId]) {
+        column_values(ids: [$numberColumnId, $fobStatusId]) {
           id
           text
         }
@@ -191,7 +191,7 @@ app.post('/loaner-fob', async (req, res) => {
       'https://api.monday.com/v2',
       {
         query: fetchQuery1,
-        variables: { itemId: Number(itemId) }
+        variables: { itemId: Number(itemId)}
       },
       {
         headers: {
