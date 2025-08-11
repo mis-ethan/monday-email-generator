@@ -145,7 +145,7 @@ app.post('/generate-email', async (req, res) => {
 
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
-    var fobNumber ;
+    var fobNumber, fobStatus;
     var columns;
     
     console.log('Request recieved...');
@@ -176,7 +176,7 @@ app.post('/loaner-fob', async (req, res) => {
     query($itemId: [ID!], $numberColumnId: [String!]){
       items(ids: $itemId) {
         name
-        column_values(ids: $numberColumnId) {
+        column_values(ids: $numberColumnId, fobStatusId) {
           id
           text
         }
@@ -202,9 +202,11 @@ app.post('/loaner-fob', async (req, res) => {
     );
     columns = fetchResponse1.data.data.items[0].column_values;
     const numberColumn = columns.find(col => col.id === numberColumnId);
-    fobNumber = numberColumn?.text; 
+    const statusColumn = columns.find(col => col.id === numberColumnId);
+    fobNumber = numberColumn?.text;
+    fobStatus = statusColumn?.text;
     
-    console.log(fobNumber);
+    console.log("Fob "+ fobNumber + " status:" + fobStatus);
     if(!fobNumber){
       console.log('fob number empty');
       return res.status(200).send("OK");
@@ -275,11 +277,11 @@ app.post('/loaner-fob', async (req, res) => {
         
           if(item[key].name == ("Fob " + fobNumber)){
               let cValues = item[key].column_values;
-              let newStatus = cValues.find(col => col.id === "status").text;
-              console.log("new status is: " + newStatus);
+              let oldStatus = cValues.find(col => col.id === "status").text;
+              console.log("new status is: " + fobStatus);
               //update status
               console.log("updating status...");
-              if( newStatus == "Loaning"){
+              if( fobStatus == "Loaning"){
                           //remove employee name and email
                           console.log("updating name and email...");
               }
