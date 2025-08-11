@@ -146,6 +146,8 @@ app.post('/generate-email', async (req, res) => {
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
     var fobNumber ;
+    var columns;
+    
     console.log('Request recieved...');
     const {
     //should recieve
@@ -198,7 +200,7 @@ app.post('/loaner-fob', async (req, res) => {
         }
       }
     );
-    const columns = fetchResponse1.data.data.items[0].column_values;
+    columns = fetchResponse1.data.data.items[0].column_values;
     const numberColumn = columns.find(col => col.id === numberColumnId);
     fobNumber = numberColumn?.text; 
     
@@ -268,11 +270,21 @@ app.post('/loaner-fob', async (req, res) => {
           console.log(colums[columnKey]);
         }
       }*/
-      for(key in data){
-          if(Object.entries(data[key].column_values) == fobNumber){
-                console.log("success");
+      for(key in item){
+          if(Object.entries(item[key]).name == ("Fob " + fobNumber)){
+              let cValues = Object.entries(item[key].column_values);
+              let newStatus = columns.find(col => col.id === "status").text;
+              console.log("new status is: " + newStatus);
+              //update status
+              console.log("updating status...");
+              if( newStatus == "Loaning"){
+                          //remove employee name and email
+                          console.log("updating name and email...");
+              }
+              console.log("deleting duplicate...");  
           }
-        else{console.log(Object.entries(data[key].column_values));}
+      }
+        //else{console.log(Object.entries(data[key].column_values[3].text));}
       }
       //traverseObject(data);
     }
