@@ -271,7 +271,7 @@ app.post('/loaner-fob', async (req, res) => {
         console.log(Object.entries(data[key]));
       }
       console.log("............................................................");
-      let data =fetchResponse2.data.data.boards[0].items_page.items;
+      data =fetchResponse2.data.data.boards[0].items_page.items;
       for(key in data){
         console.log(Object.entries(data[key]));
       }
