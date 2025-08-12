@@ -204,9 +204,9 @@ app.post('/loaner-fob', async (req, res) => {
     const numberColumn = columns.find(col => col.id === numberColumnId);
     const statusColumn = columns.find(col => col.id === fobStatusId);
     fobNumber = numberColumn?.text;
-    fobStatus = statusColumn?.text;
+    //fobStatus = statusColumn?.text;
     
-    console.log("Fob "+ fobNumber + " status is " + fobStatus);
+    console.log("Fob "+ fobNumber);// + " status is " + fobStatus);
     if(!fobNumber){
       console.log('fob number empty');
       return res.status(200).send("OK");
