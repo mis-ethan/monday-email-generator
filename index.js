@@ -376,6 +376,16 @@ app.post('/loaner-fob', async (req, res) => {
       newText,
       result: updateResponse.data
     });*/
+
+    res.json({
+      success: true,
+      itemId,
+      originalText,
+      newText,
+      result: updateResponse.data
+    });
+
+    
     console.log('fob status updated');
     return res.status(200).send('OK');
 
