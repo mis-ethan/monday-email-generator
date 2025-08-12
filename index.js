@@ -303,7 +303,7 @@ app.post('/loaner-fob', async (req, res) => {
               let cValues = item[key].column_values;
               let oldStatus = cValues.find(col => col.id === "status").text;
               console.log("new status is: " + fobStatus);
-              
+              itemId = item[key].id;
             //update status
               const updateResponse = await axios.post(
                   'https://api.monday.com/v2',
