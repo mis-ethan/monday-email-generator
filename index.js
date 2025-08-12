@@ -143,6 +143,7 @@ app.post('/generate-email', async (req, res) => {
   }
 });
 
+//------------------------------------------------------------------------------------------------//
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
     var fobNumber; var fobStatus;
@@ -173,7 +174,7 @@ app.post('/loaner-fob', async (req, res) => {
 
   // Step 1: Set up query
   const fetchQuery1 = `
-    mutation($itemId: [ID!]){
+    mutation($itemId: ID!){
       delete_item(item_id: $itemId) {
         name
         column_values {
