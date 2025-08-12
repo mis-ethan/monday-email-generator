@@ -146,7 +146,7 @@ app.post('/generate-email', async (req, res) => {
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
     var fobNumber; var fobStatus;
-    var columns;
+    var columns; var fobId;
     
     console.log('Request recieved...');
     const {
@@ -288,12 +288,12 @@ app.post('/loaner-fob', async (req, res) => {
     `;
 
     const variables = {
-      itemId: Number(itemId),
+      itemId: Number(fobId),
       boardId: Number(boardId),
       columnId: fobStatusId,
       value: fobStatus
     };
-
+    
     
       //find correct item from list
       for(key in item){
@@ -303,7 +303,7 @@ app.post('/loaner-fob', async (req, res) => {
               let cValues = item[key].column_values;
               let oldStatus = cValues.find(col => col.id === "status").text;
               console.log("new status is: " + fobStatus);
-              itemId = item[key].id;
+              fobId = item[key].id;
             //update status
               const updateResponse = await axios.post(
                   'https://api.monday.com/v2',
