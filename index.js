@@ -272,6 +272,30 @@ app.post('/loaner-fob', async (req, res) => {
           console.log(colums[columnKey]);
         }
       }*/
+
+    //update fob status
+    const updateFob = `
+      mutation ($itemId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
+        change_column_value(
+          item_id: $itemId,
+          board_id: $boardId,
+          column_id: $columnId,
+          value: $value
+        ) {
+          id
+        }
+      }
+    `;
+
+    const variables = {
+      itemId: Number(itemId),
+      boardId: Number(boardId),
+      columnId: fobStatusId,
+      value: fobStatus
+    };
+
+    
+      //find correct item from list
       for(key in item){
           console.log("item name: " + item[key].name);
         
@@ -279,7 +303,19 @@ app.post('/loaner-fob', async (req, res) => {
               let cValues = item[key].column_values;
               let oldStatus = cValues.find(col => col.id === "status").text;
               console.log("new status is: " + fobStatus);
-              //update status
+              
+            //update status
+              const updateResponse = await axios.post(
+                  'https://api.monday.com/v2',
+                  { query: updateFob, variables },
+                  {
+                    headers: {
+                      Authorization: MONDAY_API_TOKEN,
+                      'Content-Type': 'application/json'
+                    }
+                  }
+                );
+
               console.log("updating status...");
               if( fobStatus == "Loaning"){
                           //remove employee name and email
