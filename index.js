@@ -343,7 +343,7 @@ app.post('/loaner-fob', async (req, res) => {
       //traverseObject(data);
     
     // Step 2: Delete old item entry if valid request
-    const mutation = `
+    const deleteitem = `
       mutation ($itemId: ID!) {
         delete_item(item_id: itemId) {
           id
@@ -351,16 +351,39 @@ app.post('/loaner-fob', async (req, res) => {
       }
     `;
 
-    const delItem = await axios.post(
+    /*const delItem = await axios.post(
       'https://api.monday.com/v2',
-      { query: mutation,  variables: { itemId: Number(itemId) } },
+      { query: deleteitem,  variables: { itemId: Number(itemId) } },
       {
         headers: {
           Authorization: MONDAY_API_TOKEN,
           'Content-Type': 'application/json'
         }
       }
-    );
+    );*/
+
+    fetch('https://api.monday.com/v2', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': MONDAY_API_TOKEN
+                },
+                body: JSON.stringify({
+                  query: deleteitem,
+                  variables: (itemId: Number(itemId))
+                })
+              })
+                .then(res => res.json())
+                .then(json => {
+                  if (json.errors) {
+                    console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
+                  } else {
+                    console.log("✅ Success:", JSON.stringify(json.data, null, 2));
+                  }
+                })
+                .catch(err => {
+                  console.error("❌ Request Error:", err);
+            });
 
     res.json({
       success: true,
