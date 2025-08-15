@@ -295,7 +295,7 @@ app.post('/loaner-fob', async (req, res) => {
       value: fobStatus
     };
     
-    
+    var updateResponse;
       //find correct item from list
       for(key in item){
           console.log("item name: " + item[key].name);
@@ -306,7 +306,7 @@ app.post('/loaner-fob', async (req, res) => {
               console.log("new status is: " + fobStatus);
               fobId = item[key].id;
             //update status
-              const updateResponse = await axios.post(
+              updateResponse = await axios.post(
                   'https://api.monday.com/v2',
                   { query: updateFob, variables },
                   {
