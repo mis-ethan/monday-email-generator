@@ -370,7 +370,7 @@ app.post('/loaner-fob', async (req, res) => {
                 },
                 body: JSON.stringify({
                   query: deleteitem,
-                  variables: (itemId: Number(itemId))
+                  variables: {itemId: Number(itemId)}
                 })
               })
                 .then(res => res.json())
