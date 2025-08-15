@@ -345,7 +345,7 @@ app.post('/loaner-fob', async (req, res) => {
     // Step 2: Delete old item entry if valid request
     const deleteitem = `
       mutation ($itemId: ID!) {
-        delete_item(item_id: itemId) {
+        delete_item(item_id: $itemId) {
           id
         }
       }
