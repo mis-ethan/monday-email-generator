@@ -297,7 +297,7 @@ app.post('/loaner-fob', async (req, res) => {
               columnId: fobStatusId,
               value: fobStatus
             };
-              updateResponse = await axios.post(
+              /*updateResponse = await axios.post(
                   'https://api.monday.com/v2',
                   { query: updateFob, variables },
                   {
@@ -306,7 +306,29 @@ app.post('/loaner-fob', async (req, res) => {
                       'Content-Type': 'application/json'
                     }
                   }
-                );
+                );*/
+            fetch('https://api.monday.com/v2', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': MONDAY_API_TOKEN
+                },
+                body: JSON.stringify({
+                  query: update.fob,
+                  variables
+                })
+              })
+                .then(res => res.json())
+                .then(json => {
+                  if (json.errors) {
+                    console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
+                  } else {
+                    console.log("✅ Success:", JSON.stringify(json.data, null, 2));
+                  }
+                })
+                .catch(err => {
+                  console.error("❌ Request Error:", err);
+            });
 
               console.log("updating status...");
               if( fobStatus == "Loaning"){
@@ -344,11 +366,11 @@ app.post('/loaner-fob', async (req, res) => {
       success: true,
       fobId,
       fobStatus,
-      result: updateResponse.data
+      //result: updateResponse.data
     });
 
     
-    console.log(updateResponse);
+    //console.log(updateResponse);
     //return res.status(200).send('OK');
 
   } catch (error) {
