@@ -20,6 +20,32 @@ function transformText(name, domain = "ochsinc.org") {
 }
 
 
+function runQuery(query, queryVariables){
+    fetch('https://api.monday.com/v2', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': MONDAY_API_TOKEN
+        },
+        body: JSON.stringify({
+            query: query,
+            variables: queryVariables
+        })
+        })
+        .then(res => res.json())
+        .then(json => {
+            if (json.errors) {
+                console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
+            } else {
+                console.log("✅ Success:", JSON.stringify(json.data, null, 2));
+            }
+        })
+        .catch(err => {
+            console.error("❌ Request Error:", err);
+        });
+}
+
+
 app.post('/generate-email', async (req, res) => {
     const {
     payload: {
@@ -297,7 +323,7 @@ app.post('/loaner-fob', async (req, res) => {
               columnId: fobStatusId,
               value: fobStatus
             };
-              updateResponse = await axios.post(
+              /*updateResponse = await axios.post(
                   'https://api.monday.com/v2',
                   { query: updateFob, variables },
                   {
@@ -306,8 +332,8 @@ app.post('/loaner-fob', async (req, res) => {
                       'Content-Type': 'application/json'
                     }
                   }
-                );
-            /*fetch('https://api.monday.com/v2', {
+                );*/
+            fetch('https://api.monday.com/v2', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -328,12 +354,35 @@ app.post('/loaner-fob', async (req, res) => {
                 })
                 .catch(err => {
                   console.error("❌ Request Error:", err);
-            });*/
+            });
 
               console.log("updating status...");
               if( fobStatus == "Loaning"){
                           //remove employee name and email
                           console.log("updating name and email...");
+                runQuery(updateFob, variables);
+                /*fetch('https://api.monday.com/v2', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': MONDAY_API_TOKEN
+                },
+                body: JSON.stringify({
+                  query: updateFob,
+                  variables
+                })
+              })
+                .then(res => res.json())
+                .then(json => {
+                  if (json.errors) {
+                    console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
+                  } else {
+                    console.log("✅ Success:", JSON.stringify(json.data, null, 2));
+                  }
+                })
+                .catch(err => {
+                  console.error("❌ Request Error:", err);
+                });*/
               }
               console.log("deleting duplicate...");  
           }
@@ -361,8 +410,9 @@ app.post('/loaner-fob', async (req, res) => {
         }
       }
     );*/
-
-    fetch('https://api.monday.com/v2', {
+      
+      runQuery(query, {itemId: Number(itemId)});
+      /*fetch('https://api.monday.com/v2', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -383,7 +433,7 @@ app.post('/loaner-fob', async (req, res) => {
                 })
                 .catch(err => {
                   console.error("❌ Request Error:", err);
-            });
+            });*/
 
     res.json({
       success: true,
