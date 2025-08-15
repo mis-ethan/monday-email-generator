@@ -314,7 +314,7 @@ app.post('/loaner-fob', async (req, res) => {
                   'Authorization': MONDAY_API_TOKEN
                 },
                 body: JSON.stringify({
-                  query: update.fob,
+                  query: updateFob,
                   variables
                 })
               })
