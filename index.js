@@ -261,8 +261,8 @@ app.post('/loaner-fob', async (req, res) => {
 
     //update fob status
     const updateFob = `
-      mutation ($fobId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
-        change_column_value(
+      mutation ($fobId: ID!, $boardId: ID!, $columnId: String!, $value: String!) {
+        change_simple_column_value(
           item_id: $itemId,
           board_id: $boardId,
           column_id: $columnId,
