@@ -297,7 +297,7 @@ app.post('/loaner-fob', async (req, res) => {
               columnId: fobStatusId,
               value: fobStatus
             };
-              /*updateResponse = await axios.post(
+              updateResponse = await axios.post(
                   'https://api.monday.com/v2',
                   { query: updateFob, variables },
                   {
@@ -306,8 +306,8 @@ app.post('/loaner-fob', async (req, res) => {
                       'Content-Type': 'application/json'
                     }
                   }
-                );*/
-            fetch('https://api.monday.com/v2', {
+                );
+            /*fetch('https://api.monday.com/v2', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -328,7 +328,7 @@ app.post('/loaner-fob', async (req, res) => {
                 })
                 .catch(err => {
                   console.error("❌ Request Error:", err);
-            });
+            });*/
 
               console.log("updating status...");
               if( fobStatus == "Loaning"){
