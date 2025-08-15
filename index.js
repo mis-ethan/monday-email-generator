@@ -342,7 +342,7 @@ app.post('/loaner-fob', async (req, res) => {
     });
 
     
-    console.log('fob status updated');
+    console.log(updateResponse);
     //return res.status(200).send('OK');
 
   } catch (error) {
