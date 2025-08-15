@@ -261,9 +261,9 @@ app.post('/loaner-fob', async (req, res) => {
 
     //update fob status
     const updateFob = `
-      mutation ($fobId: ID!, $boardId: ID!, $columnId: String!, $value: String!) {
+      mutation ($fobId: ID!, $boardId: ID!, $fobStatusId: String!, $value: String!) {
         change_simple_column_value(
-          item_id: $itemId,
+          item_id: $fobId,
           board_id: $boardId,
           column_id: $columnId,
           value: $value
@@ -276,7 +276,7 @@ app.post('/loaner-fob', async (req, res) => {
     let variables = {
       fobId: Number(fobId),
       boardId: Number(boardId),
-      columnId: fobStatusId,
+      fobStatusId: fobStatusId,
       value: fobStatus
     };
     
@@ -291,6 +291,12 @@ app.post('/loaner-fob', async (req, res) => {
               console.log("new status is: " + fobStatus);
               fobId = item[key].id;
             //update status
+            let variables = {
+              fobId: Number(fobId),
+              boardId: Number(boardId),
+              columnId: fobStatusId,
+              value: fobStatus
+            };
               updateResponse = await axios.post(
                   'https://api.monday.com/v2',
                   { query: updateFob, variables },
