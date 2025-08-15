@@ -265,7 +265,7 @@ app.post('/loaner-fob', async (req, res) => {
         change_simple_column_value(
           item_id: $fobId,
           board_id: $boardId,
-          column_id: $columnId,
+          column_id: $fobStatusId,
           value: $value
         ) {
           id
