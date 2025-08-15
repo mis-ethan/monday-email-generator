@@ -276,7 +276,7 @@ app.post('/loaner-fob', async (req, res) => {
     let variables = {
       fobId: Number(fobId),
       boardId: Number(boardId),
-      fobStatusId: fobStatusId,
+      fobStatusId: String(fobStatusId),
       value: fobStatus
     };
     
