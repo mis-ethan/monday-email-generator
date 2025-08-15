@@ -156,6 +156,7 @@ app.post('/loaner-fob', async (req, res) => {
     console.log('missing required fields');
     return res.status(200).send('OK');
   }
+  console.log(fobStatusId);
 
   // Step 1: Set up query
   const fetchQuery1 = `
