@@ -381,8 +381,8 @@ app.post('/loaner-fob', async (req, res) => {
       success: true,
       fobId,
       fobStatus,
-      result: updateResponse.data*/
-    });
+      result: updateResponse.data
+    });*/
 
     
     console.log('fob status updated');
