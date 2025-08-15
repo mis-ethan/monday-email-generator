@@ -377,11 +377,11 @@ app.post('/loaner-fob', async (req, res) => {
       result: updateResponse.data
     });*/
 
-    res.json({
+    /*res.json({
       success: true,
       fobId,
       fobStatus,
-      result: updateResponse.data
+      result: updateResponse.data*/
     });
 
     
