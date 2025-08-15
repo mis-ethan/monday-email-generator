@@ -313,39 +313,19 @@ app.post('/loaner-fob', async (req, res) => {
         //else{console.log(Object.entries(data[key].column_values[3].text));}
       }
       //traverseObject(data);
-
-    //console.log(columns);
-
-    /*get other fob itemID
-    
     
     // Step 2: Delete old item entry if valid request
     const mutation = `
-      mutation ($itemId: ID!, $boardId: ID!, $columnId: String!, $value: JSON!) {
-        change_column_value(
-          item_id: $itemId,
-          board_id: $boardId,
-          column_id: $columnId,
-          value: $value
-        ) {
+      mutation ($itemId: ID!) {
+        delete_item(item_id: itemId) {
           id
         }
       }
     `;
 
-    const variables = {
-      itemId: Number(itemId),
-      boardId: Number(boardId),
-      columnId: targetColumnId,
-      value: JSON.stringify({
-        text: newText,
-        email: newText,
-      })
-    };
-
-    const updateResponse = await axios.post(
+    const delItem = await axios.post(
       'https://api.monday.com/v2',
-      { query: mutation, variables },
+      { query: mutation,  variables: { itemId: Number(itemId) } },
       {
         headers: {
           Authorization: MONDAY_API_TOKEN,
