@@ -262,7 +262,7 @@ app.post('/loaner-fob', async (req, res) => {
 
     //update fob status
     const updateFob = `
-      mutation ($fobId: ID!, $boardId: ID!, $fobStatusId: String!, $value: String!) {
+      mutation ($fobId: ID!, $boardId: ID!, $value: String!) {
         change_simple_column_value(
           item_id: $fobId,
           board_id: $boardId,
@@ -277,7 +277,6 @@ app.post('/loaner-fob', async (req, res) => {
     let variables = {
       fobId: Number(fobId),
       boardId: Number(boardId),
-      fobStatusId: String(fobStatusId),
       value: fobStatus
     };
     
