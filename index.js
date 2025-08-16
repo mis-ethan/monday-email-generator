@@ -316,82 +316,57 @@ app.post('/loaner-fob', async (req, res) => {
               let oldStatus = cValues.find(col => col.id === "status").text;
               console.log("new status is: " + fobStatus);
               fobId = item[key].id;
-            //update status
-            let variables = {
-              fobId: Number(fobId),
-              boardId: Number(boardId),
-              columnId: fobStatusId,
-              value: fobStatus
-            };
-              /*updateResponse = await axios.post(
-                  'https://api.monday.com/v2',
-                  { query: updateFob, variables },
-                  {
-                    headers: {
-                      Authorization: MONDAY_API_TOKEN,
-                      'Content-Type': 'application/json'
-                    }
-                  }
-                );*/
-            fetch('https://api.monday.com/v2', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': MONDAY_API_TOKEN
-                },
-                body: JSON.stringify({
-                  query: updateFob,
-                  variables
-                })
-              })
-                .then(res => res.json())
-                .then(json => {
-                  if (json.errors) {
-                    console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
-                  } else {
-                    console.log("✅ Success:", JSON.stringify(json.data, null, 2));
-                  }
-                })
-                .catch(err => {
-                  console.error("❌ Request Error:", err);
-            });
-
+              //update status
+              let variables = {
+                fobId: Number(fobId),
+                boardId: Number(boardId),
+                value: fobStatus
+              };
               console.log("updating status...");
+              runQuery(updateFob, variables);
+              
               if( fobStatus == "Loaning"){
-                          //remove employee name and email
-                          console.log("updating name and email...");
-                runQuery(updateFob, variables);
-                /*fetch('https://api.monday.com/v2', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': MONDAY_API_TOKEN
-                },
-                body: JSON.stringify({
-                  query: updateFob,
-                  variables
-                })
-              })
-                .then(res => res.json())
-                .then(json => {
-                  if (json.errors) {
-                    console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
-                  } else {
-                    console.log("✅ Success:", JSON.stringify(json.data, null, 2));
-                  }
-                })
-                .catch(err => {
-                  console.error("❌ Request Error:", err);
-                });*/
+                  console.log("updating name and email...");
+                  //update employee name and email
+                  let vars = {
+                      fobId: Number(fobId),
+                      boardId: Number(boardId),
+                      value: employeeName
+                  };
+                  const updateName = `
+                    mutation ($fobId: ID!, $boardId: ID!, $value: String!) {
+                      change_simple_column_value(
+                        item_id: $fobId,
+                        board_id: $boardId,
+                        column_id: "text_mktcj5yq",
+                        value: $value
+                      ) {
+                        id
+                      }
+                    }
+                  `;
+
+                  runQuery(updateName,vars);
+                  vars.value = email;
+                  const updateEmail = `
+                    mutation ($fobId: ID!, $boardId: ID!, $value: String!) {
+                      change_simple_column_value(
+                        item_id: $fobId,
+                        board_id: $boardId,
+                        column_id: "email_mktc4zf6",
+                        value: $value
+                      ) {
+                        id
+                      }
+                    }
+                  `;
+                  runQuery(updateEmail,vars);
               }
-              console.log("deleting duplicate...");  
+             
           }
       }
-        //else{console.log(Object.entries(data[key].column_values[3].text));}
       }
-      //traverseObject(data);
-    
-    // Step 2: Delete old item entry if valid request
+
     const deleteitem = `
       mutation ($itemId: ID!) {
         delete_item(item_id: $itemId) {
@@ -399,42 +374,9 @@ app.post('/loaner-fob', async (req, res) => {
         }
       }
     `;
-
-    /*const delItem = await axios.post(
-      'https://api.monday.com/v2',
-      { query: deleteitem,  variables: { itemId: Number(itemId) } },
-      {
-        headers: {
-          Authorization: MONDAY_API_TOKEN,
-          'Content-Type': 'application/json'
-        }
-      }
-    );*/
-      
-      runQuery(query, {itemId: Number(itemId)});
-      /*fetch('https://api.monday.com/v2', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': MONDAY_API_TOKEN
-                },
-                body: JSON.stringify({
-                  query: deleteitem,
-                  variables: {itemId: Number(itemId)}
-                })
-              })
-                .then(res => res.json())
-                .then(json => {
-                  if (json.errors) {
-                    console.error("❌ GraphQL Errors:", JSON.stringify(json.errors, null, 2));
-                  } else {
-                    console.log("✅ Success:", JSON.stringify(json.data, null, 2));
-                  }
-                })
-                .catch(err => {
-                  console.error("❌ Request Error:", err);
-            });*/
-
+    console.log("deleting duplicate...");  
+    runQuery(deleteitem, {itemId: Number(itemId)});
+     
     res.json({
       success: true,
       fobId,
