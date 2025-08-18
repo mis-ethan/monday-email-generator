@@ -351,6 +351,7 @@ app.post('/loaner-fob', async (req, res) => {
 
                   runQuery(updateName,vars);
                   vars.value = email;
+                console.log("New email:"+email);
                   const updateEmail = `
                     mutation ($fobId: ID!, $boardId: ID!, $value: String!) {
                       change_simple_column_value(
@@ -363,7 +364,7 @@ app.post('/loaner-fob', async (req, res) => {
                       }
                     }
                   `;
-                  runQuery(updateEmail,vars);
+                  //runQuery(updateEmail,vars);
               }
              
           }
