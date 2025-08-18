@@ -157,7 +157,7 @@ app.post('/generate-email', async (req, res) => {
 //------------------------------------------------------------------------------------------------//
 //loaner fob
 app.post('/loaner-fob', async (req, res) => {
-    var fobNumber; var fobStatus;
+    var fobNumber; var fobStatus; var employeeName; var email;
     var columns; var fobId;
     
     console.log('Request recieved...');
@@ -214,8 +214,12 @@ app.post('/loaner-fob', async (req, res) => {
       }
     );
     columns = fetchResponse1.data.data.items[0].column_values;
+    const nameColumn = columns.find(col => col.id === "text_mktcj5yq");
+    const emailColumn = columns.find(col => col.id === "email_mktc4zf6");
     const numberColumn = columns.find(col => col.id === numberColumnId);
     const statusColumn = columns.find(col => col.id === fobStatusId);
+    employeeName = nameColumn?.text;
+    email = emailColumn?.text;
     fobNumber = numberColumn?.text;
     fobStatus = statusColumn?.text;
     
